@@ -75,6 +75,32 @@ WidgetsFlutterBinding.ensureInitialized();
   // Now, use the method above to retrieve all the dogs.
   print(await utilizatori()); // Prints a list that include Fido.
 
+  Future<void> updateUtilizatori(ModelUtilizator utilizator) async {
+    // Get a reference to the database.
+    final db = await database;
+
+    // Update the given Dog.
+    await db.update(
+      'utilizator',
+      utilizator.toMap(),
+      // Ensure that the Dog has a matching id.
+      where: 'id = ?',
+      // Pass the Dog's id as a whereArg to prevent SQL injection.
+      whereArgs: [utilizator.id],
+    );
+  }
+
+  // Update Fido's age and save it to the database.
+  carina = ModelUtilizator(
+    id: carina.id,
+    name: carina.name,
+    trainer: carina.trainer - 1,
+  );
+  await updateUtilizatori(carina);
+
+// Print the updated results.
+  print(await utilizatori()); // Prints Carina with trainer 0 -> client.
+
   runApp(const MyApp());
 }
 
