@@ -6,7 +6,7 @@
 
 class ModelUtilizator {
   final int id;
-  final bool trainer; // true = trainer, false = client
+  final int trainer; // true = trainer, false = client
   final String name;
 
   const ModelUtilizator({

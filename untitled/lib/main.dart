@@ -35,7 +35,7 @@ WidgetsFlutterBinding.ensureInitialized();
     version: 1,
   );
 
-  Future<void> insertDog(ModelUtilizator trainer) async {
+  Future<void> insertUtilizator(ModelUtilizator trainer) async {
     // Get a reference to the database.
 
     final db = await database;
@@ -45,14 +45,35 @@ WidgetsFlutterBinding.ensureInitialized();
     //
     // In this case, replace any previous data.
     await db.insert(
-      'dogs',
+      'utilizator',
       trainer.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
   }
 
-  var carina = const ModelUtilizator(id: 0, trainer: true, name: 'Carina');
-  await insertDog(carina);
+  var carina = const ModelUtilizator(id: 0, trainer: 1, name: 'Carina');
+  await insertUtilizator(carina);
+
+  // A method that retrieves all the dogs from the dogs table.
+  Future<List<ModelUtilizator>> utilizatori() async {
+    // Get a reference to the database.
+    final db = await database;
+
+    // Query the table for all The Dogs.
+    final List<Map<String, dynamic>> maps = await db.query('utilizator');
+
+    // Convert the List<Map<String, dynamic> into a List<Dog>.
+    return List.generate(maps.length, (i) {
+      return ModelUtilizator(
+        id: maps[i]['id'],
+        trainer: maps[i]['trainer'],
+        name: maps[i]['name'],
+      );
+    });
+  }
+
+  // Now, use the method above to retrieve all the dogs.
+  print(await utilizatori()); // Prints a list that include Fido.
 
   runApp(const MyApp());
 }
