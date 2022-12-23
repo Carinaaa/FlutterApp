@@ -2,38 +2,29 @@
 import 'package:sqflite/sqflite.dart';
 
 import '../DbTables/ModelTrainer.dart';
-import '../DbTables/ModelUtilizator.dart';
-
-// probably add the insert here
 
 class AccessTrainer{
-  late Future<Database> database;
+  Future<Database> database;
 
-  AccessTrainer(Future<Database> database){
-    this.database = database;
-  }
+  AccessTrainer(this.database);
 
-  Future<void> insertUtilizator(ModelUtilizator trainer) async {
+  Future<void> insertTrainer(ModelTrainer trainer) async {
     // Get a reference to the database.
     final db = await database;
     await db.insert(
-      'utilizator',
+      'trainer',
       trainer.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
   }
 
-  // A method that retrieves all the dogs from the dogs table.
-  Future<List<ModelUtilizator>> utilizatori() async {
+  Future<List<ModelTrainer>> allTrainers() async {
     // Get a reference to the database.
     final db = await database;
+    final List<Map<String, dynamic>> maps = await db.query('trainer');
 
-    // Query the table for all The Dogs.
-    final List<Map<String, dynamic>> maps = await db.query('utilizator');
-
-    // Convert the List<Map<String, dynamic> into a List<Dog>.
     return List.generate(maps.length, (i) {
-      return ModelUtilizator(
+      return ModelTrainer(
         id: maps[i]['id'],
         trainer: maps[i]['trainer'],
         name: maps[i]['name'],
@@ -41,18 +32,14 @@ class AccessTrainer{
     });
   }
 
-  Future<void> updateUtilizatori(ModelUtilizator utilizator) async {
-    // Get a reference to the database.
+  Future<void> updateTrainers(ModelTrainer trainer) async {
     final db = await database;
 
-    // Update the given Dog.
     await db.update(
-      'utilizator',
-      utilizator.toMap(),
-      // Ensure that the Dog has a matching id.
+      'trainer',
+      trainer.toMap(),
       where: 'id = ?',
-      // Pass the Dog's id as a whereArg to prevent SQL injection.
-      whereArgs: [utilizator.id],
+      whereArgs: [trainer.id],
     );
   }
 }

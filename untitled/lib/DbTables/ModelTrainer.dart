@@ -1,17 +1,25 @@
 
 import 'ModelUtilizator.dart';
-/*
-* Model Trainer clasa ce reprezinta tabela trainer
-* mosteneste ModelUtilizator
-* */
-class ModelTrainer extends ModelUtilizator {
 
-// aici putem sa mai adaugam ce vrem pentru traineri specific
+class ModelTrainer extends ModelUtilizator {
 
   ModelTrainer(
       {
         required super.id,
         required super.trainer,
-        required super.name
+        required super.name,
       });
+
+Map<String, dynamic> toMap() {
+  return {
+    'id': id,
+    'trainer': trainer,
+    'name': name,
+  };
+}
+
+@override
+String toString() {
+  return 'Trainer {id: $id, trainer: $trainer, name: $name}';
+}
 }

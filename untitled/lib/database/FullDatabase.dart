@@ -9,10 +9,10 @@ class FullDatabase {
   }
 
   FullDatabase._internal() {
-    createDatabase();
+    _createDatabase();
   }
-
-  Future<Database> createDatabase() async {
+// TODO: full tables to be added
+  Future<Database> _createDatabase() async {
    var db = openDatabase(
       join(await getDatabasesPath(), 'training_sesh.db'),
       onCreate: (db, version) {
